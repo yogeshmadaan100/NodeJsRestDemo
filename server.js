@@ -6,7 +6,10 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://node:node@novus.modulusmongo.net:27017/Iganiq8o'); // connect to our database
+mongoose.connect('mongodb://127.0.0.1:27017/test',function(err){
+    if(err)
+        console.log("connection error"+err);
+}); // connect to our database
 var Bear     = require('./models/bear');
 
 
@@ -43,11 +46,15 @@ router.route('/bears')
 
         var bear = new Bear();      // create a new instance of the Bear model
         bear.name = req.body.name;  // set the bears name (comes from the request)
-
+        console.log("got request");
+        console.log(req.body.name);
         // save the bear and check for errors
         bear.save(function(err) {
             if (err)
+            {
                 res.send(err);
+                console.log(err);
+            }
 
             res.json({ message: 'Bear created!' });
         });
